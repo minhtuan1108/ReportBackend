@@ -49,11 +49,6 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function reports() : HasMany
-    {
-        return $this->hasMany(Report::class);
-    }
-
     public function roles() : BelongsToMany
     {
         return $this->belongsToMany(Role::class);
@@ -63,4 +58,23 @@ class User extends Authenticatable
     {
         return $this->hasMany(Feedback::class, 'users_id', 'id');
     }
+
+    // Relation này dùng cho user
+    public function reports() : HasMany
+    {
+        return $this->hasMany(Report::class);
+    }
+
+    // Relation này dùng cho staff
+    public function jobs() : HasMany
+    {
+        return $this->hasMany(Assignment::class, 'worker_id', 'id');
+    }
+
+    // Relation này dùng cho manager
+    public function assignments(): HasMany
+    {
+        return $this->hasMany(Assignment::class, 'manager_id', 'id');
+    }
+
 }

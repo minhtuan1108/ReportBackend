@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\ReportStatus;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -16,13 +17,13 @@ class ReportFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    protected array $statusArr = ['COMPLETE', 'SENT', 'DRAFT', 'PROCESS', 'IGNORE'];
+    protected array $statusArr = ['complete', 'sent', 'process', 'ignore'];
     public function definition(): array
     {
         return [
             'title' => fake()->text(100),
             'description' => fake()->text(),
-            'location_api' => 'current_location',
+            'location_api' => 'location_api_from_phone',
             'location_text' => fake()->streetAddress(),
             'status' => $this->statusArr[array_rand($this->statusArr)],
             'users_id' => User::factory()->create()->id,

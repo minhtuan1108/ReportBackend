@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Report extends Model
 {
@@ -35,5 +36,10 @@ class Report extends Model
     public function feedbacks() : HasMany
     {
         return $this->hasMany(Feedback::class, 'reports_id', 'id');
+    }
+
+    public function assignments() : HasOne
+    {
+        return $this->hasOne(Assignment::class);
     }
 }
