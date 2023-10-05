@@ -7,7 +7,7 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## Cách chạy đồ án:
+## Cách chạy đồ án (PHP version 8.1)
 1. Clone đồ án về máy
 2. Chạy lệnh composer install và npm install 
 3. Copy file .env.example và đổi tên thành .env .Sau đó thay đổi các dòng DB_DATABASE, DB_USERNAME, DB_PASSWORD theo cấu hình của máy
