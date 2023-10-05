@@ -30,7 +30,7 @@ class Report extends Model
 
     public function medias() : BelongsToMany
     {
-        return $this->belongsToMany(Media::class);
+        return $this->belongsToMany(Media::class, 'report_media', 'reports_id', 'media_id');
     }
 
     public function feedbacks() : HasMany

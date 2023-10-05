@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('location_api');
             $table->string('location_text');
-            $table->set('status', ['COMPLETE', 'SENT', 'DRAFT', 'PROCESS', 'IGNORE']);
+            $table->set('status', ['complete', 'sent', 'draft', 'process', 'ignore']);
             $table->foreignId('users_id')->constrained();
             $table->softDeletes();
             $table->timestamps();

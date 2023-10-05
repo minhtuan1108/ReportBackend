@@ -7,9 +7,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Feedback>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Assignment>
  */
-class FeedbackFactory extends Factory
+class AssignmentFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,9 +19,10 @@ class FeedbackFactory extends Factory
     public function definition(): array
     {
         return [
-            'note' => fake()->text(),
-            'users_id' => User::factory()->create()->id,
             'reports_id' => Report::factory()->create()->id,
+            'worker_id' => User::factory()->create()->id,
+            'manager_id' => User::factory()->create()->id,
+            'note' => fake()->text(100)
         ];
     }
 }

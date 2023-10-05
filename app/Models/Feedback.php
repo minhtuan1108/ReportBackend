@@ -10,6 +10,7 @@ class Feedback extends Model
 {
     use HasFactory;
 
+    protected $table = 'Feedbacks';
     protected $fillable = [
         'note',
         'users_id',
@@ -18,6 +19,6 @@ class Feedback extends Model
 
     public function medias() : BelongsToMany
     {
-        return $this->belongsToMany(Media::class);
+        return $this->belongsToMany(Media::class, 'feedback_media', 'feedbacks_id', 'media_id');
     }
 }

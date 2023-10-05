@@ -25,7 +25,7 @@ class ReportFactory extends Factory
             'description' => fake()->text(),
             'location_api' => 'location_api_from_phone',
             'location_text' => fake()->streetAddress(),
-            'status' => $this->statusArr[array_rand($this->statusArr)],
+            'status' => 'sent',
             'users_id' => User::factory()->create()->id,
         ];
     }
