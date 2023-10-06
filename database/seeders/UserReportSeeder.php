@@ -6,10 +6,7 @@ use App\Enums\RoleEnum;
 use App\Models\Media;
 use App\Models\Report;
 use App\Models\Role;
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class UserReportSeeder extends Seeder
 {

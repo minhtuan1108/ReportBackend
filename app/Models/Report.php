@@ -25,7 +25,7 @@ class Report extends Model
 
     public function user() : BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'users_id', 'id');
     }
 
     public function medias() : BelongsToMany
@@ -33,13 +33,13 @@ class Report extends Model
         return $this->belongsToMany(Media::class, 'report_media', 'reports_id', 'media_id');
     }
 
-    public function feedbacks() : HasMany
+    public function feedback() : HasOne
     {
-        return $this->hasMany(Feedback::class, 'reports_id', 'id');
+        return $this->hasOne(Feedback::class, 'reports_id', 'id');
     }
 
-    public function assignments() : HasOne
+    public function assignment() : HasOne
     {
-        return $this->hasOne(Assignment::class);
+        return $this->hasOne(Assignment::class, 'reports_id', 'id');
     }
 }

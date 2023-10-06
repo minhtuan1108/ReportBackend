@@ -18,9 +18,9 @@ class Assignment extends Model
         'note'
     ];
 
-    public function report() : HasOne
+    public function report() : BelongsTo
     {
-        return $this->hasOne(Report::class);
+        return $this->belongsTo(Report::class, 'reports_id', 'id');
     }
 
     public function worker() : BelongsTo

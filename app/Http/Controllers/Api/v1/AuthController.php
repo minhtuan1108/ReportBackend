@@ -47,7 +47,18 @@ class AuthController extends Controller
     }
 
     public function getCurrentUser(Request $request){
-        return $request->user();
+        $user = $request->user();
+        return $this->responseJSON([
+            'name' => $user->name,
+            'username' => $user->username,
+            'student_code' => $user->student_code,
+            'is_active' => $user->is_active,
+            'email' => $user->email,
+            'role' => $user->roles->map(function ($item){
+                return $item['name'];
+            })->join('|')
+        ]);
+
     }
 
     public function logout(Request $request){

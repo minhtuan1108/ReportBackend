@@ -36,12 +36,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'id',
         'password',
         'remember_token',
-        'created_at',
-        'updated_at',
-        'email_verified_at'
     ];
 
     /**
@@ -67,7 +63,7 @@ class User extends Authenticatable
     // Relation này dùng cho user
     public function reports() : HasMany
     {
-        return $this->hasMany(Report::class);
+        return $this->hasMany(Report::class, 'users_id', 'id');
     }
 
     // Relation này dùng cho staff
@@ -80,6 +76,18 @@ class User extends Authenticatable
     public function assignments(): HasMany
     {
         return $this->hasMany(Assignment::class, 'manager_id', 'id');
+    }
+
+    public function isManager():bool {
+        return $this->tokenCan('manager');
+    }
+
+    public function isWorker():bool {
+        return $this->tokenCan('worker');
+    }
+
+    public function isUser():bool {
+        return $this->tokenCan('user');
     }
 
 }
