@@ -44,9 +44,13 @@ Route::prefix('v1')
     })
     // Đã login
     ->middleware('auth:sanctum')->group(function(){
+
         // Logout
+        Route::get('/user-info', [AuthController::class, 'logout']);
+
         // Lấy thông tin cá nhân
         Route::get('/user-info', [AuthController::class, 'getCurrentUser']);
+
         // Cập nhật thông tin cá nhân
 
         Route::middleware('abilities:user')->group(function(){

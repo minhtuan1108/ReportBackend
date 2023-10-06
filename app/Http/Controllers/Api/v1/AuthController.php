@@ -50,6 +50,20 @@ class AuthController extends Controller
         return $request->user();
     }
 
+    public function logout(Request $request){
+        if ($request->user() != null){
+            $request->user()->currentAccessToken()->delete();
+            return $this->responseJSON([
+                'error' => 0,
+                'message' => 'Đăng xuất thành công'
+            ]);
+        }
+        return $this->responseJSON([
+            'error' => 1,
+            'message' => 'Không thể đăng xuất'
+        ]);
+    }
+
     private function getRoleNames($user): array {
         $roleNames = [];
         $roles = $user->roles()->get();
