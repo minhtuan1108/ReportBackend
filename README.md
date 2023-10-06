@@ -16,6 +16,8 @@
 6. Chạy lệnh php artisan db:seed
 7. Chạy php artisan serve để thực hiện chạy server.
 
+Ngoài ra có thể truy cập url ở trên để chạy backend
+
 mssv: 312
 pass: 312
 
