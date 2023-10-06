@@ -52,6 +52,7 @@ Route::prefix('v1')
         Route::get('/user-info', [AuthController::class, 'getCurrentUser']);
 
         // Cập nhật thông tin cá nhân
+        Route::get('/user-info', [AuthController::class, 'getCurrentUser']);
 
         Route::middleware('abilities:user')->group(function(){
             // Lấy danh sách task đã gửi (trả về các task của request->user()). Sau đó phân trang, khi kéo xuống hết dữ liệu, react native sẽ yêu cầu load thêm các task
