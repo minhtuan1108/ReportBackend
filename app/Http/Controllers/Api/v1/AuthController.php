@@ -46,6 +46,10 @@ class AuthController extends Controller
         ]);
     }
 
+    public function getCurrentUser(Request $request){
+        return $request->user();
+    }
+
     private function getRoleNames($user): array {
         $roleNames = [];
         $roles = $user->roles()->get();

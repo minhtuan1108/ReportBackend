@@ -40,12 +40,13 @@ Route::prefix('v1')
         // Login
         Route::post('/login', [AuthController::class, 'login']);
 
-        // Quên mật khẩu
+        // Quên mật khẩu (làm sau)
     })
     // Đã login
     ->middleware('auth:sanctum')->group(function(){
         // Logout
         // Lấy thông tin cá nhân
+        Route::get('/user-info', [AuthController::class, 'getCurrentUser']);
         // Cập nhật thông tin cá nhân
 
         Route::middleware('abilities:user')->group(function(){
