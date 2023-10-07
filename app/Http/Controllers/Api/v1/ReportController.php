@@ -8,6 +8,7 @@ use App\Http\Requests\StoreReportRequest;
 use App\Http\Resources\Error\NoRight;
 use App\Http\Resources\Report\ReportDetail;
 use App\Http\Resources\Report\ReportResource;
+use App\Models\Media;
 use App\Models\Report;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -47,7 +48,20 @@ class ReportController extends Controller
      */
     public function store(StoreReportRequest $request)
     {
-        //
+        $validated = $request->validated();
+        $report = new Report($validated);
+        $request->user()->reports()->save($report);
+
+        $files = $request->file()['photo'];
+        $paths = [];
+        $i = 1;
+        foreach ($files as $file){
+            $fileName = $file->storeAs('photos', "img$i".'_'.$report->id.'_'.sha1(time()).'.'.$file->extension());
+            $paths[] = ['media_link' => asset($fileName)];
+            $i++;
+        }
+        $report->medias()->createMany($paths);
+        return new ReportDetail(Report::with('medias')->find($report->id));
     }
 
     /**

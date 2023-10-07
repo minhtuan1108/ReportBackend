@@ -5,8 +5,9 @@ namespace App\Http\Resources\Error;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class NoDataFound extends JsonResource
+class RequestNotValidated extends JsonResource
 {
+
     /**
      * Transform the resource into an array.
      *
@@ -14,6 +15,9 @@ class NoDataFound extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'error' => 1,
+            'message' => $this->errors()
+        ];
     }
 }
