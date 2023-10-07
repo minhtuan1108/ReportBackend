@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\Enums\ReportStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreReportRequest;
+use App\Http\Resources\Error\NoRight;
+use App\Http\Resources\Report\ReportDetail;
 use App\Http\Resources\Report\ReportResource;
 use App\Models\Report;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 
 class ReportController extends Controller
 {
@@ -24,7 +27,7 @@ class ReportController extends Controller
             return $this->indexManager();
         if ($user->isWorker())
             return $this->indexWorker($user);
-        return null;
+        return new NoRight(null);
     }
 
     public function indexManager(){
@@ -42,7 +45,7 @@ class ReportController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreReportRequest $request)
     {
         //
     }
@@ -52,7 +55,7 @@ class ReportController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return new ReportDetail(Report::with(['feedback.medias', 'feedback.user', 'medias', 'assignment.worker'])->find($id));
     }
 
     /**

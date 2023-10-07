@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\v1\AuthController;
+use App\Http\Controllers\Api\v1\FallbackController;
 use App\Http\Controllers\Api\v1\ReportController;
+use App\Http\Resources\Error\PathNotFound;
 use App\Models\Report;
 use Illuminate\Support\Facades\Route;
 
@@ -39,13 +41,15 @@ Route::get('/test', function(){
 });
 
 // Api version 1
-Route::prefix('v1')
-    ->namespace('App\Http\Controllers\Api\v1')
-    ->group(function(){
+Route::prefix('v1')->namespace('App\Http\Controllers\Api\v1')->group(function(){
         // Login
-        Route::post('/login', [AuthController::class, 'login']);
+        Route::post('/login', [AuthController::class, 'login'])->name('login');
 
         // Quên mật khẩu (làm sau)
+        Route::fallback(function (){
+            return new PathNotFound(null);
+        });
+
     })
     // Đã login
     ->middleware('auth:sanctum')->group(function(){
@@ -58,17 +62,24 @@ Route::prefix('v1')
 
         // Cập nhật thông tin cá nhân (làm sau)
 
-        Route::middleware('abilities:user')->group(function(){
-            // Lấy danh sách task đã gửi (trả về các task của request->user()). Sau đó phân trang, khi kéo xuống hết dữ liệu, react native sẽ yêu cầu load thêm các task
-            Route::get('/reports', [ReportController::class, 'indexUser']);
-            // Lấy thông tin chi tiết từng task (CHỈ ĐƯỢC XEM TASK CỦA BẢN THÂN GỬI và thông tin feedback của thợ (nếu có) )
+        Route::middleware('ability:user,worker,manager')->group(function(){
+            // Danh sách các report (các người dùng đều xem chung được)
+            Route::get('/reports', [ReportController::class, 'index']);
+            Route::get('/report/{id}', [ReportController::class, 'show'])->where(['id' => '[0-9]+']);
+
+        });
+
+        Route::middleware('ability:user')->group(function(){
+            // [v] Lấy danh sách task đã gửi (trả về các task của request->user()). Sau đó phân trang, khi kéo xuống hết dữ liệu, react native sẽ yêu cầu load thêm các task
+            // [v] Lấy thông tin chi tiết từng task (CHỈ ĐƯỢC XEM TASK CỦA BẢN THÂN GỬI và thông tin feedback của thợ (nếu có) )
             // Thực hiện tạo task (gửi thông tin và các ảnh: cần tạo đối tượng request chứa task và list ảnh) (cần kiểm tra người dùng có bị chặn báo cáo hay không isActive)
+            Route::post('/report', [ReportController::class, 'store']);
             // Xóa các task trạng thái đã gửi, còn xóa nháp thì ở react
+            Route::delete('/report/{id}', [ReportController::class, 'destroy'])->where(['id' => '[0-9]+']);
         });
 
         Route::middleware('abilities:manager')->group(function(){
             // Lấy tất cả các task (lọc theo thời gian và tình trạng), phải phan trang, kéo xuống thêm dữ liệu
-            Route::get('/reports', [ReportController::class, 'indexManager']);
             // Lấy thông tin chi tiết của task và feedback của thợ nếu có
             // Tìm kiếm thợ
             // Trả về danh sách thợ
@@ -82,7 +93,6 @@ Route::prefix('v1')
 
         Route::middleware('abilities:worker')->group(function(){
             // Xem danh sách các việc dược giao (CHỈ XEM VIỆC CỦA MÌNH ĐƯỢC GIAO)
-            Route::get('/reports', [ReportController::class, 'indexWorker']);
             // Xem chi tiết công việc được giao (CHỈ XEM VIỆC CỦA MÌNH ĐƯỢC GIAO, CÓ THỂ XEM ĐƯỢC NOTE DO QUẢN TRỊ VIÊN TRONG ASSIGNMENT)
             // Tạo feedback cho công việc (tải ảnh và ghi chú)
         });

@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->tinyText('title');
             $table->text('description');
-            $table->string('location_api');
-            $table->string('location_text');
+            $table->string('location_api', 200);
+            $table->string('location_text', 200);
             $table->set('status', ['complete', 'sent', 'draft', 'process', 'ignore']);
             $table->foreignId('users_id')->constrained();
             $table->softDeletes();

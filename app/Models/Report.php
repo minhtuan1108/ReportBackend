@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ReportStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,8 +20,10 @@ class Report extends Model
         'description',
         'location_api',
         'location_text',
-        'status',
-        'users_id'
+    ];
+
+    protected $attributes = [
+        'status' => ReportStatus::SENT,
     ];
 
     public function user() : BelongsTo
