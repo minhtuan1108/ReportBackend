@@ -48,6 +48,7 @@ class ReportController extends Controller
      */
     public function store(StoreReportRequest $request)
     {
+        $this->authorize('create', Report::class);
         $validated = $request->validated();
         $report = new Report($validated);
         $request->user()->reports()->save($report);
@@ -67,8 +68,10 @@ class ReportController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(int $id)
     {
+        $report = Report::find($id);
+        $this->authorize('view', $report);
         return new ReportDetail(Report::with(['feedback.medias', 'feedback.user', 'medias', 'assignment.worker'])->find($id));
     }
 
@@ -77,7 +80,8 @@ class ReportController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $report = Report::find($id);
+        $this->authorize('update', $report);
     }
 
     /**
@@ -85,6 +89,7 @@ class ReportController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $report = Report::find($id);
+        $this->authorize('delete', $report);
     }
 }

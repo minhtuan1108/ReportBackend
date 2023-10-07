@@ -14,7 +14,7 @@ class ReportPolicy
      */
     public function viewAny(User $user): bool
     {
-        if ($user->tokenCan('manager'))
+        if ($user->isManager())
             return true;
         return false;
     }
@@ -29,7 +29,7 @@ class ReportPolicy
             return true;
 
         // Người quản lý
-        if ($user->tokenCan('manager'))
+        if ($user->isManager())
             return true;
 
         // Người thực hiện sửa chữa
@@ -44,7 +44,7 @@ class ReportPolicy
      */
     public function create(User $user): bool
     {
-        if ($user->tokenCan('user')){
+        if ($user->isUser()){
             return true;
         }
         return false;
@@ -55,7 +55,7 @@ class ReportPolicy
      */
     public function update(User $user, Report $report): bool
     {
-        if ($user->tokenCan('manager')){
+        if ($user->isUser()){
             return true;
         }
         return false;
@@ -66,9 +66,10 @@ class ReportPolicy
      */
     public function delete(User $user, Report $report): bool
     {
-        if ($user->tokenCan('user') && $report->status == ReportStatus::SENT){
+        if ($user->isUser() && $report->status == ReportStatus::SENT)
             return true;
-        }
+        if ($user->isManager())
+            return true;
         return false;
     }
 
@@ -77,7 +78,7 @@ class ReportPolicy
      */
     public function restore(User $user, Report $report): bool
     {
-        if ($user->tokenCan('manager')){
+        if ($user->isManager()){
             return true;
         }
         return false;
@@ -88,7 +89,7 @@ class ReportPolicy
      */
     public function forceDelete(User $user, Report $report): bool
     {
-        if ($user->tokenCan('manager')){
+        if ($user->isManager()){
             return true;
         }
         return false;

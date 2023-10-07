@@ -34,8 +34,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerPolicies();
-        Gate::define('view-any-report', function(User $user){
-            return $user->tokenCan('manager');
-        });
     }
 }
