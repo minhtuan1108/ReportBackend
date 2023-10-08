@@ -90,4 +90,8 @@ class User extends Authenticatable
         return $this->tokenCan('user');
     }
 
+    public function isAdmin():bool{
+        return $this->tokenCan('admin');
+    }
+
 }

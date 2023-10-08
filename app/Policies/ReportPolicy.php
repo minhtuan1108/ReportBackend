@@ -44,7 +44,7 @@ class ReportPolicy
      */
     public function create(User $user): bool
     {
-        if ($user->isUser()){
+        if ($user->isUser() && $user->is_active){
             return true;
         }
         return false;

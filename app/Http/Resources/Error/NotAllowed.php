@@ -5,7 +5,7 @@ namespace App\Http\Resources\Error;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class NoRight extends JsonResource
+class NotAllowed extends JsonResource
 {
     /**
      * Transform the resource into an array.

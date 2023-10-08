@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Api\v1\AuthController;
-use App\Http\Controllers\Api\v1\FallbackController;
 use App\Http\Controllers\Api\v1\ReportController;
 use App\Http\Resources\Error\PathNotFound;
 use App\Models\Report;
@@ -66,7 +65,6 @@ Route::prefix('v1')->namespace('App\Http\Controllers\Api\v1')->group(function(){
             // Danh sách các report (các người dùng đều xem chung được)
             Route::get('/reports', [ReportController::class, 'index']);
             Route::get('/report/{id}', [ReportController::class, 'show'])->where(['id' => '[0-9]+']);
-
         });
 
         Route::middleware('ability:user')->group(function(){

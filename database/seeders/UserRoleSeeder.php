@@ -52,6 +52,13 @@ class UserRoleSeeder extends Seeder
             ]
         );
 
+        $admin = Role::create([
+                'id' => RoleEnum::ADMIN,
+                'name' => 'admin',
+                'description' => 'Người thực hiện quản lý, điều phối các công việc từ người dùng cho nhân viên sửa chữa'
+            ]
+        );
+
         return compact("user", "worker", "manager");
     }
 }

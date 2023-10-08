@@ -14,4 +14,5 @@ final class RoleEnum extends Enum
     const USER = 1;
     const WORKER = 10;
     const MANAGER = 100;
+    const ADMIN = 1000;
 }

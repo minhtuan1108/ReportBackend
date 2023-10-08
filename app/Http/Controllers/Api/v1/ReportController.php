@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Enums\ReportStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreReportRequest;
-use App\Http\Resources\Error\NoRight;
+use App\Http\Resources\Error\NotAllowed;
 use App\Http\Resources\Report\ReportDetail;
 use App\Http\Resources\Report\ReportResource;
 use App\Models\Media;
@@ -28,19 +28,19 @@ class ReportController extends Controller
             return $this->indexManager();
         if ($user->isWorker())
             return $this->indexWorker($user);
-        return new NoRight(null);
+        return new NotAllowed(null);
     }
 
     public function indexManager(){
-        return ReportResource::collection(Report::orderBy('created_at', 'DESC')->paginate());
+        return ReportResource::collection(Report::orderBy('created_at', 'DESC')->paginate(30));
     }
 
     public function indexUser(User $user){
-        return ReportResource::collection($user->reports()->orderBy('created_at', 'DESC')->paginate());
+        return ReportResource::collection($user->reports()->orderBy('created_at', 'DESC')->paginate(30));
     }
 
     public function indexWorker(User $worker){
-        return ReportResource::collection($worker->jobs()->orderBy('created_at', 'DESC')->paginate());
+        return ReportResource::collection($worker->jobs()->orderBy('created_at', 'DESC')->paginate(30));
     }
 
     /**

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\Enums\RoleEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Error\RequestNotValidated;
 use App\Http\Traits\ApiResponse;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -15,26 +18,15 @@ class AuthController extends Controller
 
     public function login(Request $request){
         $validator = Validator::make($request->all(), [
-            'mssv' => 'required|numeric',
+            'mssv' => 'required',
             'password' => 'required',
             'device_name' => 'required',
         ]);
 
         if ($validator->fails()){
-            return $this->responseJSON([
-                'error' => 1,
-                'message' => 'Vui lòng truyền đủ tham số',
-                'details' => $validator->errors()
-            ], 400);
+            return new RequestNotValidated($validator);
         }
-
-        $user = User::where('student_code', $request->mssv)->first();
-        if (! $user || !Hash::check($request->password, $user->password))
-            return $this->responseJSON([
-                'error' => 1,
-                'message' => 'Sai mật khẩu hoặc mã sinh viên !'
-            ], 400);
-
+        $user = $this->loginWithCustomUsername($request);
         $roles = $this->getRoleNames($user);
         $token = $user->createToken($request->input('device_name', 'null'), $roles);
         return $this->responseJSON([
@@ -44,6 +36,27 @@ class AuthController extends Controller
             'expires_at' => $token->accessToken->expires_at,
             'device_name' => $token->accessToken->name,
         ]);
+    }
+
+    private function loginWithCustomUsername(Request $request){
+        $validator = Validator::make($request->all(), [
+            'mssv' => 'numeric',
+        ]);
+        $field_for_username = 'student_code';
+
+        // Xử lý cho các user không dùng mã số sinh viên (worker, manager)
+        if ($validator->fails()){
+            $field_for_username = 'username';
+        }
+
+        // Xử lý cho sinh viên dùng mssv
+        $user = User::where($field_for_username, $request->mssv)->first();
+        if (! $user || !Hash::check($request->password, $user->password))
+            return $this->responseJSON([
+                'error' => 1,
+                'message' => 'Sai mật khẩu hoặc tên đăng nhập (mssv) !'
+            ], 400);
+        return $user;
     }
 
     public function getCurrentUser(Request $request){

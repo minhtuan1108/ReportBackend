@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Resources\Error\NoRight;
+use App\Http\Resources\Error\NotAllowed;
 use App\Http\Resources\Error\RequestNotValidated;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -27,6 +27,6 @@ class BaseRequest extends FormRequest
 
     protected function failedAuthorization()
     {
-        throw new HttpResponseException(response()->json(new NoRight(null), 400));
+        throw new HttpResponseException(response()->json(new NotAllowed(null), 400));
     }
 }

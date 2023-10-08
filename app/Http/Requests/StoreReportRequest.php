@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Resources\Error\NoRight;
+use App\Http\Resources\Error\NotAllowed;
 use App\Http\Resources\Error\RequestNotValidated;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -15,7 +15,7 @@ class StoreReportRequest extends BaseRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->isUser();
+        return $this->user()->isUser() && $this->user()->is_active;
     }
 
     /**
@@ -30,7 +30,8 @@ class StoreReportRequest extends BaseRequest
             'description' => 'required|max:2000',
             'location_api' => 'required|max:200',
             'location_text' => 'required|max:200',
-            'photo.*' => 'required|image|max:51200',
+            'photo' => 'required|array|min:1|max:6',
+            'photo.*' => 'required|image|max:30000',
         ];
     }
 }
