@@ -10,8 +10,8 @@
 ## Cách chạy đồ án (PHP version 8.1)
 1. Clone đồ án về máy
 2. Chạy lệnh composer install và npm install
-3. Chạy lệnh php artisan key:generate
-4. Copy file .env.example và đổi tên thành .env .Sau đó thay đổi các dòng DB_DATABASE, DB_USERNAME, DB_PASSWORD theo cấu hình của máy
+3.  Copy file .env.example và đổi tên thành .env .Sau đó thay đổi các dòng DB_DATABASE, DB_USERNAME, DB_PASSWORD theo cấu hình của máy
+4. Chạy lệnh php artisan key:generate
 5. Chạy lệnh php artisan migrate. Nếu lệnh bị lỗi chạy php artisan migrate:fresh để drop all dữ liệu đã lưu vào db
 6. Chạy lệnh php artisan db:seed
 7. Chạy php artisan serve để thực hiện chạy server.
