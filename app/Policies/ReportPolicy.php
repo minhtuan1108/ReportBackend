@@ -55,7 +55,7 @@ class ReportPolicy
      */
     public function update(User $user, Report $report): bool
     {
-        if ($user->isUser()){
+        if ($user->isManager()){
             return true;
         }
         return false;

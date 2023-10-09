@@ -19,7 +19,7 @@ class AssignmentWorker extends JsonResource
             'time' => $this->created_at,
             'message' => 'Đang thực hiện',
             'text' => 'Phản hồi của bạn đang được thực hiện bởi '.$this->worker->name.' vào lúc '. $this->created_at,
-            $this->mergeWhen($request->user() != null && $request->user()->isWorker(), [
+            $this->mergeWhen($request->user() != null && ($request->user()->isWorker() || $request->user()->isManager()), [
                 'manager_note' => $this->note,
                 'manager_name' => $this->manager->name,
             ])
