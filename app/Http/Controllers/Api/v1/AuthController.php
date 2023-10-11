@@ -27,6 +27,11 @@ class AuthController extends Controller
             return new RequestNotValidated($validator);
         }
         $user = $this->loginWithCustomUsername($request);
+        if ($user == null)
+            return $this->responseJSON([
+                'error' => 1,
+                'message' => 'Sai mật khẩu hoặc tên đăng nhập (mssv) !'
+            ], 400);
         $roles = $this->getRoleNames($user);
         $token = $user->createToken($request->input('device_name', 'null'), $roles);
         return $this->responseJSON([
@@ -51,11 +56,8 @@ class AuthController extends Controller
 
         // Xử lý cho sinh viên dùng mssv
         $user = User::where($field_for_username, $request->mssv)->first();
-        if (! $user || !Hash::check($request->password, $user->password))
-            return $this->responseJSON([
-                'error' => 1,
-                'message' => 'Sai mật khẩu hoặc tên đăng nhập (mssv) !'
-            ], 400);
+        if (!$user || !Hash::check($request->password, $user->password))
+            return null;
         return $user;
     }
 
