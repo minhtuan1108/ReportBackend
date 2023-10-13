@@ -44,7 +44,8 @@ class MediaFactory extends Factory
 //            $height /= 2;
 //        }
         return [
-            'media_link' => fake()->imageUrl()
+            'media_link' => fake()->imageUrl(),
+            'local_file' => null,
         ];
     }
 }

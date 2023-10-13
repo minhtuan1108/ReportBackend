@@ -32,4 +32,13 @@ class Feedback extends Model
     {
         return $this->belongsTo(User::class, 'users_id', 'id');
     }
+
+    public function hardDelete(){
+        $medias = $this->medias();
+        foreach($medias->get() as $media){
+            $media->deleteLocalFile();
+        }
+        $medias->detach();
+        $this->delete();
+    }
 }

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('media', function (Blueprint $table) {
             $table->id();
             $table->string('media_link', 200);
+            $table->string('local_file', 200)->nullable();
             $table->timestamps();
         });
     }
