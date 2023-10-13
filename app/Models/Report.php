@@ -36,9 +36,9 @@ class Report extends Model
         return $this->belongsToMany(Media::class, 'report_media', 'reports_id', 'media_id');
     }
 
-    public function feedback() : HasOne
+    public function feedback() : HasMany
     {
-        return $this->hasOne(Feedback::class, 'reports_id', 'id');
+        return $this->hasMany(Feedback::class, 'reports_id', 'id');
     }
 
     public function assignment() : HasOne

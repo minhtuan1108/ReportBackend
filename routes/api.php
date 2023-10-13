@@ -65,15 +65,16 @@ Route::prefix('v1')->namespace('App\Http\Controllers\Api\v1')->group(function(){
             // Danh sách các report (các người dùng đều xem chung được)
             Route::get('/reports', [ReportController::class, 'index']);
             Route::get('/report/{id}', [ReportController::class, 'show'])->where(['id' => '[0-9]+']);
+            // Xóa các task trạng thái đã gửi, còn xóa nháp thì ở react
+            Route::delete('/report/{id}', [ReportController::class, 'destroy'])->where(['id' => '[0-9]+']);
         });
 
-        Route::middleware('ability:user')->group(function(){
+        Route::middleware('abilities:user')->group(function(){
             // [v] Lấy danh sách task đã gửi (trả về các task của request->user()). Sau đó phân trang, khi kéo xuống hết dữ liệu, react native sẽ yêu cầu load thêm các task
             // [v] Lấy thông tin chi tiết từng task (CHỈ ĐƯỢC XEM TASK CỦA BẢN THÂN GỬI và thông tin feedback của thợ (nếu có) )
             // Thực hiện tạo task (gửi thông tin và các ảnh: cần tạo đối tượng request chứa task và list ảnh) (cần kiểm tra người dùng có bị chặn báo cáo hay không isActive)
             Route::post('/report', [ReportController::class, 'store']);
-            // Xóa các task trạng thái đã gửi, còn xóa nháp thì ở react
-            Route::delete('/report/{id}', [ReportController::class, 'destroy'])->where(['id' => '[0-9]+']);
+            
         });
 
         Route::middleware('abilities:manager')->group(function(){
@@ -85,6 +86,7 @@ Route::prefix('v1')->namespace('App\Http\Controllers\Api\v1')->group(function(){
             // Giao việc cho thợ
             // Tạo feedback spam từ admin cho việc
             // Xóa (ẩn) việc làm
+            Route::put('/report', [ReportController::class, 'update']);
             // Chặn các báo cáo từ người dùng
             // Mở chặn các báo cáo từ người dùng trong cá nhân
         });
