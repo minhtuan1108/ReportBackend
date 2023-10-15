@@ -103,6 +103,21 @@ class ReportController extends Controller
     public function update(Request $request)
     {
         $report = Report::find($request->idReport);
+        //Check target to update
+        if($request->input('target') == 'ignore report'){
+            return $this->ignoreReport($request, $report);
+        }else{
+            if($request->input('target') == 'create assignment'){
+                return $this->updateToProcess($report);
+            }
+            
+        }
+        
+        
+    }
+
+    //Ignore report
+    private function ignoreReport(Request $request, Report $report){
         //Check report status
         if($report->status == ReportStatus::SENT){
             $this->authorize('update', $report);
@@ -120,7 +135,13 @@ class ReportController extends Controller
             'status' => 'fail',
             'message' => 'Không thể từ chối báo cáo với trạng thái '. $report->status
         ];
-        
+    } 
+
+    //Update report status to process
+    private function updateToProcess(Report $report){
+        $report->status = ReportStatus::PROCESS;
+        $report->save();
+        return 'Cập nhật report thành process';
     }
 
     /**
