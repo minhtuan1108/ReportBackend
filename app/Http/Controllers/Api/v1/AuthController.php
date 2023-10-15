@@ -31,7 +31,7 @@ class AuthController extends Controller
             return $this->responseJSON([
                 'error' => 1,
                 'message' => 'Sai mật khẩu hoặc tên đăng nhập (mssv) !'
-            ], 400);
+            ]);
         $roles = $this->getRoleNames($user);
         $token = $user->createToken($request->input('device_name', 'null'), $roles);
         return $this->responseJSON([
