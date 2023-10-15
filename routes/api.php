@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\v1\AuthController;
 use App\Http\Controllers\Api\v1\ReportController;
+use App\Http\Controllers\Api\v1\AssignmentController;
 use App\Http\Resources\Error\PathNotFound;
 use App\Models\Report;
 use Illuminate\Support\Facades\Route;
@@ -84,8 +85,9 @@ Route::prefix('v1')->namespace('App\Http\Controllers\Api\v1')->group(function(){
             // Trả về danh sách thợ
             // Xem chi tiết thông tin của thợ và các việc người đó đã làm
             // Giao việc cho thợ
+            Route::post('/assignment', [AssignmentController::class, 'store']);
             // Tạo feedback spam từ admin cho việc
-            // Xóa (ẩn) việc làm
+            // Xóa (ẩn) báo cáo
             Route::put('/report', [ReportController::class, 'update']);
             // Chặn các báo cáo từ người dùng
             // Mở chặn các báo cáo từ người dùng trong cá nhân
