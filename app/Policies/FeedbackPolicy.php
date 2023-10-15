@@ -2,7 +2,9 @@
 
 namespace App\Policies;
 
+use App\Models\Assignment;
 use App\Models\Feedback;
+use App\Models\Report;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
@@ -31,11 +33,13 @@ class FeedbackPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user, Assignment $assignment): bool
     {
-        if ($user->tokenCan('worker') || $user->tokenCan('manager'))
+        echo("Trong policy: " .$assignment->worker_id == $user->id);
+        if (($user->isWorker()) || $user->tokenCan('manager'))
             return true;
         return false;
+        // && $assignment->worker_id == $user->id
     }
 
     /**

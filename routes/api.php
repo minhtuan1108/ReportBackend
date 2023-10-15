@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\v1\AuthController;
+use App\Http\Controllers\Api\v1\FeedbackController;
 use App\Http\Controllers\Api\v1\ReportController;
 use App\Http\Controllers\Api\v1\AssignmentController;
 use App\Http\Resources\Error\PathNotFound;
@@ -97,5 +98,6 @@ Route::prefix('v1')->namespace('App\Http\Controllers\Api\v1')->group(function(){
             // Xem danh sách các việc dược giao (CHỈ XEM VIỆC CỦA MÌNH ĐƯỢC GIAO)
             // Xem chi tiết công việc được giao (CHỈ XEM VIỆC CỦA MÌNH ĐƯỢC GIAO, CÓ THỂ XEM ĐƯỢC NOTE DO QUẢN TRỊ VIÊN TRONG ASSIGNMENT)
             // Tạo feedback cho công việc (tải ảnh và ghi chú)
+            Route::post('/feedback', [FeedbackController::class, 'store']);
         });
 });
