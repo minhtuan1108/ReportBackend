@@ -89,7 +89,7 @@ Route::prefix('v1')->namespace('App\Http\Controllers\Api\v1')->group(function(){
             Route::post('/assignment', [AssignmentController::class, 'store']);
             // Tạo feedback spam từ admin cho việc
             // Xóa (ẩn) báo cáo
-            Route::put('/report', [ReportController::class, 'update']);
+            Route::put('/report/ignore', [ReportController::class, 'ignoreReport']);
             // Chặn các báo cáo từ người dùng
             // Mở chặn các báo cáo từ người dùng trong cá nhân
         });
