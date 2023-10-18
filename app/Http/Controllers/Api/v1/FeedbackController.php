@@ -20,14 +20,12 @@ class FeedbackController extends Controller
         $reportController = new ReportController();
         if ($report->status == ReportStatus::PROCESS) {
             
-            $feedbackData = $request->merge(["users_id" => $request->user()->id])->collect()->toArray();
+            $feedbackData = $request->merge(["users_id" => $request->user()->id, "target" => "create feedback"])->collect()->toArray();
             // echo("Hello ".implode(",", $feedbackData));
             $feedback = new Feedback($feedbackData);
-            $feedback->save();
-            $reportController->update($request);
 
             $files = $request->file('photo');
-            // echo(implode($files));
+            echo(implode($files));
             $paths = [];
             $dir = $reportController->makeDir();
             $i = 1;
@@ -39,6 +37,9 @@ class FeedbackController extends Controller
                 ];
                 $i++;
             }
+
+            $feedback->save();
+            $reportController->update($request);
             $feedback->medias()->createMany($paths);
             return new FeedbackDetail(Feedback::with('medias')->find($feedback->id));
         }

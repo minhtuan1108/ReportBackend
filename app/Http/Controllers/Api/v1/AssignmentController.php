@@ -19,7 +19,7 @@ class AssignmentController extends Controller
         $this->authorize('create', Assignment::class);
         $report = Report::find($request->reports_id);
         if ($report->status == ReportStatus::SENT) {
-            $assignmentData = $request->collect()->put("manager_id", $request->user()->id)->toArray();
+            $assignmentData = $request->merge(["manager_id" => $request->user()->id, "target" => "create assignment"])->toArray();
             $assignment = new Assignment($assignmentData);
             $assignment->save();
             (new ReportController)->update($request);

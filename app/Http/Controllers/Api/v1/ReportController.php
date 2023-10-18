@@ -47,7 +47,7 @@ class ReportController extends Controller
 
     public function indexWorker(User $worker)
     {
-        return ReportResource::collection($worker->jobs()->orderBy('created_at', 'DESC')->paginate(30));
+        return ReportResource::collection($worker->reportWorker()->orderBy('created_at', 'DESC')->paginate(30));
     }
 
     /**
@@ -108,9 +108,7 @@ class ReportController extends Controller
     {
         $report = Report::find($request->reports_id);
         //Check target to update
-        if ($request->input('target') == 'ignore report') {
-            return $this->ignoreReport($request, $report);
-        } elseif ($request->input('target') == 'create assignment') {
+        if ($request->input('target') == 'create assignment') {
             $report->status = ReportStatus::PROCESS;
             $report->save();
             return 'Cập nhật report thành process';
@@ -124,8 +122,9 @@ class ReportController extends Controller
     }
 
     //Ignore report
-    private function ignoreReport(Request $request, Report $report)
+    public function ignoreReport(Request $request)
     {
+        $report = Report::find($request->reports_id);
         //Check report status
         if ($report->status == ReportStatus::SENT) {
             $this->authorize('update', $report);

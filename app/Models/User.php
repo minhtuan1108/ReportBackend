@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -76,6 +77,12 @@ class User extends Authenticatable
     public function assignments(): HasMany
     {
         return $this->hasMany(Assignment::class, 'manager_id', 'id');
+    }
+
+    //Relation dùng để lấy report cho worker (Chưa dùng được huhu)
+    public function reportWorker(): HasManyThrough
+    {
+        return $this->hasManyThrough(Report::class, Assignment::class, null, 'woker_id', 'reports_id', 'id');
     }
 
     public function isManager():bool {

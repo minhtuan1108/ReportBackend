@@ -35,11 +35,10 @@ class FeedbackPolicy
      */
     public function create(User $user, Assignment $assignment): bool
     {
-        echo("Trong policy: " .$assignment->worker_id == $user->id);
-        if (($user->isWorker()) || $user->tokenCan('manager'))
+        if (($user->isWorker() && $assignment->worker_id == $user->id) || $user->tokenCan('manager'))
             return true;
         return false;
-        // && $assignment->worker_id == $user->id
+        
     }
 
     /**
