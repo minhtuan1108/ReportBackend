@@ -40,6 +40,7 @@ class AuthController extends Controller
             'token' => $token->plainTextToken,
             'expires_at' => $token->accessToken->expires_at,
             'device_name' => $token->accessToken->name,
+            'role' => join(",", $roles),
         ]);
     }
 
