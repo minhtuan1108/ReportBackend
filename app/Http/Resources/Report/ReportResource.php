@@ -22,6 +22,7 @@ class ReportResource extends JsonResource
             'location' => $this->location_text,
             'status' => $this->status,
             'user' => $this->user->name,
+            'avatar' => $this->medias[0],
             'created_at' => $this->created_at
         ];
     }

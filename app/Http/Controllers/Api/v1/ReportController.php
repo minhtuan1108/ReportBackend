@@ -26,28 +26,36 @@ class ReportController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
+        $title = $request->input('name', '');
+        $description = $request->input('description', '');
+        $fromDate = $request->input('from', '');
+        $toDate = $request->input('to', '');
+        $label = $request->input('label', '');
+        $status = $request->input('status', '');
+
         if ($user->isUser())
-            return $this->indexUser($user);
+            return $this->indexUser($user, $title, $description, $fromDate, $toDate, $label, $status);
         if ($user->isManager())
-            return $this->indexManager();
+            return $this->indexManager($title, $description, $fromDate, $toDate, $label, $status);
         if ($user->isWorker())
-            return $this->indexWorker($user);
+            return $this->indexWorker($user, $title, $description, $fromDate, $toDate, $label, $status);
         return new NotAllowed(null);
     }
 
-    public function indexManager()
+    // Search bằng tên, nội dung, label, trạng thái, date
+    public function indexManager($title, $description, $fromDate, $toDate, $label, $status)
     {
-        return ReportResource::collection(Report::orderBy('created_at', 'DESC')->paginate(30));
+        return ReportResource::collection(Report::with('medias')->orderBy('created_at', 'DESC')->paginate(30));
     }
 
-    public function indexUser(User $user)
+    public function indexUser(User $user, $title, $description, $fromDate, $toDate, $label, $status)
     {
-        return ReportResource::collection($user->reports()->orderBy('created_at', 'DESC')->paginate(30));
+        return ReportResource::collection($user->reports()->with('medias')->orderBy('created_at', 'DESC')->paginate(30));
     }
 
-    public function indexWorker(User $worker)
+    public function indexWorker(User $worker, $title, $description, $fromDate, $toDate, $label, $status)
     {
-        return ReportResource::collection($worker->reportWorker()->orderBy('created_at', 'DESC')->paginate(30));
+        return ReportResource::collection($worker->reportWorker()->with('medias')->orderBy('created_at', 'DESC')->paginate(30));
     }
 
     /**
