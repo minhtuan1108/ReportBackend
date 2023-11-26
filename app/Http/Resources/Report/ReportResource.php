@@ -22,7 +22,7 @@ class ReportResource extends JsonResource
             'location' => $this->location_text,
             'status' => $this->status,
             'user' => $this->user->name,
-            'avatar' => $this->medias[0]->media_link,
+            'images' => MediaDetail::collection($this->whenLoaded('medias')),
             'created_at' => $this->created_at
         ];
     }
