@@ -21,7 +21,7 @@ class FeedbackDetail extends JsonResource
             'images' => MediaDetail::collection($this->whenLoaded('medias')),
             'time' => $this->created_at,
             'message' => 'Đã hoàn thành',
-            'text' => 'Phản hồi đã được hoàn thành bởi '.$this->user->name.' vào lúc '.$this->created_at.' vói nội dung là: '.$this->note
+            'text' => 'Phản hồi đã được hoàn thành bởi '.$this->user->name.' vào lúc '.$this->created_at
         ];
     }
 }
