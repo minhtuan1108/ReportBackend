@@ -34,13 +34,13 @@ class ReportDetail extends JsonResource
             'images' => MediaDetail::collection($this->whenLoaded('medias')),
             'created_at' => $this->created_at,
             $this->mergeWhen($this->status == ReportStatus::COMPLETE, [
-                'done_by' => new FeedbackDetail($this->feedback[0])
+                'done_by' => $this->feedback[0] ? new FeedbackIgnore($this->feedback[0]) : ''
             ]),
             $this->mergeWhen($this->status == ReportStatus::PROCESS, [
                 'done_by' => new AssignmentWorker($this->assignment)
             ]),
             $this->mergeWhen($this->status == ReportStatus::IGNORE, [
-                'done_by' => new FeedbackIgnore($this->feedback[0])
+                'done_by' => $this->feedback[0] ? new FeedbackIgnore($this->feedback[0]) : ''
             ]),
             $this->mergeWhen($this->status == ReportStatus::SENT,[
                 'done_by' => [
