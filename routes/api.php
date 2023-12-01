@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\v1\AuthController;
 use App\Http\Controllers\Api\v1\FeedbackController;
 use App\Http\Controllers\Api\v1\ReportController;
 use App\Http\Controllers\Api\v1\AssignmentController;
+use App\Http\Controllers\Api\v1\UserController;
 use App\Http\Resources\Error\PathNotFound;
 use App\Models\Report;
 use Illuminate\Support\Facades\Route;
@@ -76,14 +77,13 @@ Route::prefix('v1')->namespace('App\Http\Controllers\Api\v1')->group(function(){
             // [v] Lấy thông tin chi tiết từng task (CHỈ ĐƯỢC XEM TASK CỦA BẢN THÂN GỬI và thông tin feedback của thợ (nếu có) )
             // Thực hiện tạo task (gửi thông tin và các ảnh: cần tạo đối tượng request chứa task và list ảnh) (cần kiểm tra người dùng có bị chặn báo cáo hay không isActive)
             Route::post('/report', [ReportController::class, 'store']);
-            
         });
 
         Route::middleware('abilities:manager')->group(function(){
             // Lấy tất cả các task (lọc theo thời gian và tình trạng), phải phan trang, kéo xuống thêm dữ liệu
             // Lấy thông tin chi tiết của task và feedback của thợ nếu có
             // Tìm kiếm thợ
-            // Trả về danh sách thợ
+            Route::get('/users', [UserController::class, 'index']);
             // Xem chi tiết thông tin của thợ và các việc người đó đã làm
             // Giao việc cho thợ
             Route::post('/assignment', [AssignmentController::class, 'store']);
