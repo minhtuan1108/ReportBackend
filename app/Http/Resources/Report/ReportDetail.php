@@ -26,6 +26,7 @@ class ReportDetail extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'location' => $this->location_text,
+            'coordinate' => $this->location_api,
             'status' => $this->status,
             'user' => [
                 'name' => $this->user->name,
