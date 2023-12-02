@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreign('worker_id')->references('id')->on('users');
             $table->foreign('manager_id')->references('id')->on('users');
             $table->foreignId('reports_id')->constrained();
-            $table->text('note');
+            $table->text('note')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
