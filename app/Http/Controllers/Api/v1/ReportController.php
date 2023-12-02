@@ -99,21 +99,21 @@ class ReportController extends Controller
         if($status == '' || $status == 'all')
             return ReportResource::collection($worker->reportWorker()->with('medias')
                                                 ->where(function ($query) use ($title) {
-                                                    $query->where('title', 'like', '%' . $title . '%')
-                                                        ->orWhere('description', 'like', '%' . $title . '%');
+                                                    $query->where('reports.title', 'like', '%' . $title . '%')
+                                                        ->orWhere('reports.description', 'like', '%' . $title . '%');
                                                 })
-                                                ->where('created_at', '>=', $fromDate)
-                                                ->where('created_at', '<=', $toDate)
-                                                ->orderBy('created_at', 'DESC')->paginate(30));
+                                                ->where('reports.created_at', '>=', $fromDate)
+                                                ->where('reports.created_at', '<=', $toDate)
+                                                ->orderBy('reports.created_at', 'DESC')->paginate(30));
         return ReportResource::collection($worker->reportWorker()->with('medias')
                                             ->where(function ($query) use ($title) {
-                                                $query->where('title', 'like', '%' . $title . '%')
-                                                    ->orWhere('description', 'like', '%' . $title . '%');
+                                                $query->where('reports.title', 'like', '%' . $title . '%')
+                                                    ->orWhere('reports.description', 'like', '%' . $title . '%');
                                             })
-                                            ->where('created_at', '>=', $fromDate)
-                                            ->where('created_at', '<=', $toDate)
-                                            ->where('status', $status)
-                                            ->orderBy('created_at', 'DESC')->paginate(30));
+                                            ->where('reports.created_at', '>=', $fromDate)
+                                            ->where('reports.created_at', '<=', $toDate)
+                                            ->where('reports.status', $status)
+                                            ->orderBy('reports.created_at', 'DESC')->paginate(30));
     }
 
     /**
