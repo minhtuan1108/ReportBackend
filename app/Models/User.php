@@ -82,7 +82,7 @@ class User extends Authenticatable
     //Relation dùng để lấy report cho worker (Chưa dùng được huhu)
     public function reportWorker(): HasManyThrough
     {
-        return $this->hasManyThrough(Report::class, Assignment::class, null, 'woker_id', 'reports_id', 'id');
+        return $this->hasManyThrough(Report::class, Assignment::class, 'worker_id', 'id', 'id', 'reports_id');
     }
 
     public function isManager():bool {
