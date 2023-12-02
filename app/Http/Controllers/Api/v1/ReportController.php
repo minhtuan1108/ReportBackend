@@ -26,36 +26,94 @@ class ReportController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $title = $request->input('name', '');
-        $description = $request->input('description', '');
+        $title = $request->input('text', '');
         $fromDate = $request->input('from', '');
         $toDate = $request->input('to', '');
-        $label = $request->input('label', '');
         $status = $request->input('status', '');
 
+        if($fromDate == null){
+            $fromDate = date('Y-m-d', 0);
+        }
+
+        if($toDate == null){
+            $toDate = date('Y-m-d');
+        }
+
         if ($user->isUser())
-            return $this->indexUser($user, $title, $description, $fromDate, $toDate, $label, $status);
+            return $this->indexUser($user, $title, $fromDate, $toDate, $status);
         if ($user->isManager())
-            return $this->indexManager($title, $description, $fromDate, $toDate, $label, $status);
+            return $this->indexManager($title, $fromDate, $toDate, $status);
         if ($user->isWorker())
-            return $this->indexWorker($user, $title, $description, $fromDate, $toDate, $label, $status);
+            return $this->indexWorker($user, $title, $fromDate, $toDate, $status);
         return new NotAllowed(null);
     }
 
     // Search bằng tên, nội dung, label, trạng thái, date
-    public function indexManager($title, $description, $fromDate, $toDate, $label, $status)
+    public function indexManager($title, $fromDate, $toDate, $status)
     {
-        return ReportResource::collection(Report::with('medias')->orderBy('created_at', 'DESC')->paginate(30));
+        if($status == '' || $status == 'all'){
+            return ReportResource::collection(Report::with('medias')
+                                                    ->where(function ($query) use ($title) {
+                                                        $query->where('title', 'like', '%' . $title . '%')
+                                                            ->orWhere('description', 'like', '%' . $title . '%');
+                                                    })
+                                                    ->where('created_at', '>=', $fromDate)
+                                                    ->where('created_at', '<=', $toDate)
+                                                    ->orderBy('created_at', 'DESC')->paginate(30));
+        }
+        return ReportResource::collection(Report::with('medias')
+                                                ->where(function ($query) use ($title) {
+                                                    $query->where('title', 'like', '%' . $title . '%')
+                                                        ->orWhere('description', 'like', '%' . $title . '%');
+                                                })
+                                                ->where('created_at', '>=', $fromDate)
+                                                ->where('created_at', '<=', $toDate)
+                                                ->where('status', $status)
+                                                ->orderBy('created_at', 'DESC')->paginate(30));
     }
 
-    public function indexUser(User $user, $title, $description, $fromDate, $toDate, $label, $status)
+    public function indexUser(User $user, $title, $fromDate, $toDate, $status)
     {
-        return ReportResource::collection($user->reports()->with('medias')->orderBy('created_at', 'DESC')->paginate(30));
+        if($status == '' || $status == 'all')
+            return ReportResource::collection($user->reports()->with('medias')
+                                                ->where(function ($query) use ($title) {
+                                                    $query->where('title', 'like', '%' . $title . '%')
+                                                        ->orWhere('description', 'like', '%' . $title . '%');
+                                                })
+                                                ->where('created_at', '>=', $fromDate)
+                                                ->where('created_at', '<=', $toDate)
+                                                ->orderBy('created_at', 'DESC')->paginate(30));
+        return ReportResource::collection($user->reports()->with('medias')
+                                            ->where(function ($query) use ($title) {
+                                                $query->where('title', 'like', '%' . $title . '%')
+                                                    ->orWhere('description', 'like', '%' . $title . '%');
+                                            })
+                                            ->where('created_at', '>=', $fromDate)
+                                            ->where('created_at', '<=', $toDate)
+                                            ->where('status', $status)
+                                            ->orderBy('created_at', 'DESC')->paginate(30));
     }
 
-    public function indexWorker(User $worker, $title, $description, $fromDate, $toDate, $label, $status)
+    public function indexWorker(User $worker, $title, $fromDate, $toDate, $status)
     {
-        return ReportResource::collection($worker->reportWorker()->with('medias')->orderBy('created_at', 'DESC')->paginate(30));
+        if($status == '' || $status == 'all')
+            return ReportResource::collection($worker->reportWorker()->with('medias')
+                                                ->where(function ($query) use ($title) {
+                                                    $query->where('title', 'like', '%' . $title . '%')
+                                                        ->orWhere('description', 'like', '%' . $title . '%');
+                                                })
+                                                ->where('created_at', '>=', $fromDate)
+                                                ->where('created_at', '<=', $toDate)
+                                                ->orderBy('created_at', 'DESC')->paginate(30));
+        return ReportResource::collection($worker->reportWorker()->with('medias')
+                                            ->where(function ($query) use ($title) {
+                                                $query->where('title', 'like', '%' . $title . '%')
+                                                    ->orWhere('description', 'like', '%' . $title . '%');
+                                            })
+                                            ->where('created_at', '>=', $fromDate)
+                                            ->where('created_at', '<=', $toDate)
+                                            ->where('status', $status)
+                                            ->orderBy('created_at', 'DESC')->paginate(30));
     }
 
     /**
