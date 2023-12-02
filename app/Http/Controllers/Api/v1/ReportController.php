@@ -226,7 +226,7 @@ class ReportController extends Controller
     {
         $report = Report::find($id);
         $this->authorize('delete', $report);
-        echo ($report);
+//        echo ($report);
         $this->hardDestroy($report);
     }
 
