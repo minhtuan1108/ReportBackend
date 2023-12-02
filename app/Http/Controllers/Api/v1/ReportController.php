@@ -226,8 +226,11 @@ class ReportController extends Controller
     {
         $report = Report::find($id);
         $this->authorize('delete', $report);
-//        echo ($report);
         $this->hardDestroy($report);
+        return [
+            "status" => "success",
+            "message" => "Xóa thành công"
+        ];
     }
 
     public function hardDestroy(Report $report)
