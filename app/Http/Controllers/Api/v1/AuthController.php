@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Enums\RoleEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SignUpRequest;
 use App\Http\Resources\Error\RequestNotValidated;
 use App\Http\Traits\ApiResponse;
 use App\Models\Role;
@@ -89,6 +90,31 @@ class AuthController extends Controller
             'error' => 1,
             'message' => 'Không thể đăng xuất'
         ]);
+    }
+
+    public function register(SignUpRequest $request){
+        $validated = $request->validated();
+        $user = new User([
+            "name" => $validated['firstName']. " ". $validated['lastName'],
+            "email" => $validated['email'],
+            "username" => $validated['email'],
+            "password" => $validated['password'],
+            "student_code" => $validated['student_code'],
+            "is_active" => true,
+        ]);
+        try {
+            Role::find(1)->users()->save($user);
+        } catch (\Exception $e) {
+            return [
+                "status" => 1,
+                "message" => "Không thể lưu database do trùng dữ liệu (email)"
+            ];
+        }
+
+        return [
+            "status" => 0,
+            "message" => "Tạo thành công tài khoản",
+        ];
     }
 
     private function getRoleNames($user): array {

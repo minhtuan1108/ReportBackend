@@ -32,9 +32,7 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        if ($user->tokenCan('manager'))
-            return true;
-        return false;
+        return true;
     }
 
     /**

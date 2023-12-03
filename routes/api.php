@@ -47,6 +47,9 @@ Route::prefix('v1')->namespace('App\Http\Controllers\Api\v1')->group(function(){
         // Login
         Route::post('/login', [AuthController::class, 'login'])->name('login');
 
+        // Login
+        Route::post('/register', [AuthController::class, 'register'])->name('register');
+
         // Quên mật khẩu (làm sau)
         Route::fallback(function (){
             return new PathNotFound(null);
