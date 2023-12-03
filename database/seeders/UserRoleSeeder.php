@@ -20,7 +20,7 @@ class UserRoleSeeder extends Seeder
     }
 
     public function createUsers($roles){
-        $users = User::factory(10)->create([
+        $users = User::factory(20)->create([
 
             ]
         );
