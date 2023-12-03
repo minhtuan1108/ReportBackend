@@ -106,13 +106,13 @@ class AuthController extends Controller
             Role::find(1)->users()->save($user);
         } catch (\Exception $e) {
             return [
-                "status" => 1,
+                "error" => 1,
                 "message" => "Không thể lưu database do trùng dữ liệu (email)"
             ];
         }
 
         return [
-            "status" => 0,
+            "error" => 0,
             "message" => "Tạo thành công tài khoản",
         ];
     }
