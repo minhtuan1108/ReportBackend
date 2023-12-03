@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('username')->unique();
             $table->string('password');
-            $table->string('student_code');
+            $table->string('student_code')->unique();
             $table->boolean('is_active');
             $table->string('email')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
