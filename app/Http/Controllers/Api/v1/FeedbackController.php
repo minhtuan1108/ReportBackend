@@ -16,16 +16,16 @@ class FeedbackController extends Controller
     {
         $report = Report::find($request->reports_id);
         $this->authorize('create', [Feedback::class ,$report->assignment]);
-        
+
         $reportController = new ReportController();
         if ($report->status == ReportStatus::PROCESS) {
-            
+
             $feedbackData = $request->merge(["users_id" => $request->user()->id, "target" => "create feedback"])->collect()->toArray();
             // echo("Hello ".implode(",", $feedbackData));
             $feedback = new Feedback($feedbackData);
 
             $files = $request->file('photo');
-            echo(implode($files));
+//            echo(implode($files));
             $paths = [];
             $dir = $reportController->makeDir();
             $i = 1;

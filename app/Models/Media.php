@@ -28,7 +28,7 @@ class Media extends Model
 
     //Delete medias local file and in database
     public function deleteLocalFile(){
-        echo("Local file" .$this->local_file);
+//        echo("Local file" .$this->local_file);
         if($this->local_file != null){
             Storage::delete($this->local_file);
         }

@@ -59,7 +59,7 @@ class ReportController extends Controller
                                                     })
                                                     ->where('created_at', '>=', $fromDate)
                                                     ->where('created_at', '<=', $toDate)
-                                                    ->orderBy('created_at', 'DESC')->paginate(30));
+                                                    ->orderBy('created_at', 'DESC')->get());
         }
         return ReportResource::collection(Report::with('medias')
                                                 ->where(function ($query) use ($title) {
@@ -69,7 +69,7 @@ class ReportController extends Controller
                                                 ->where('created_at', '>=', $fromDate)
                                                 ->where('created_at', '<=', $toDate)
                                                 ->where('status', $status)
-                                                ->orderBy('created_at', 'DESC')->paginate(30));
+                                                ->orderBy('created_at', 'DESC')->get());
     }
 
     public function indexUser(User $user, $title, $fromDate, $toDate, $status)
@@ -82,7 +82,7 @@ class ReportController extends Controller
                                                 })
                                                 ->where('created_at', '>=', $fromDate)
                                                 ->where('created_at', '<=', $toDate)
-                                                ->orderBy('created_at', 'DESC')->paginate(30));
+                                                ->orderBy('created_at', 'DESC')->get());
         return ReportResource::collection($user->reports()->with('medias')
                                             ->where(function ($query) use ($title) {
                                                 $query->where('title', 'like', '%' . $title . '%')
@@ -91,7 +91,7 @@ class ReportController extends Controller
                                             ->where('created_at', '>=', $fromDate)
                                             ->where('created_at', '<=', $toDate)
                                             ->where('status', $status)
-                                            ->orderBy('created_at', 'DESC')->paginate(30));
+                                            ->orderBy('created_at', 'DESC')->get());
     }
 
     public function indexWorker(User $worker, $title, $fromDate, $toDate, $status)
@@ -104,7 +104,7 @@ class ReportController extends Controller
                                                 })
                                                 ->where('reports.created_at', '>=', $fromDate)
                                                 ->where('reports.created_at', '<=', $toDate)
-                                                ->orderBy('reports.created_at', 'DESC')->paginate(30));
+                                                ->orderBy('reports.created_at', 'DESC')->get());
         return ReportResource::collection($worker->reportWorker()->with('medias')
                                             ->where(function ($query) use ($title) {
                                                 $query->where('reports.title', 'like', '%' . $title . '%')
@@ -113,7 +113,7 @@ class ReportController extends Controller
                                             ->where('reports.created_at', '>=', $fromDate)
                                             ->where('reports.created_at', '<=', $toDate)
                                             ->where('reports.status', $status)
-                                            ->orderBy('reports.created_at', 'DESC')->paginate(30));
+                                            ->orderBy('reports.created_at', 'DESC')->get());
     }
 
     /**
@@ -226,8 +226,11 @@ class ReportController extends Controller
     {
         $report = Report::find($id);
         $this->authorize('delete', $report);
-        echo ($report);
         $this->hardDestroy($report);
+        return [
+            "status" => "success",
+            "message" => "Xóa thành công"
+        ];
     }
 
     public function hardDestroy(Report $report)

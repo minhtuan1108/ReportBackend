@@ -11,7 +11,7 @@ class Feedback extends Model
 {
     use HasFactory;
 
-    protected $table = 'Feedbacks';
+    protected $table = 'feedbacks';
     protected $fillable = [
         'note',
         'users_id',

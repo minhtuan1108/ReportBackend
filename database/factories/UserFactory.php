@@ -19,7 +19,7 @@ class UserFactory extends Factory
     public function definition(): array
     {
         // password chính là mssv
-        $code = fake()->numberBetween(0, 100);
+        $code = fake()->numberBetween(0, 31200);
         return [
             'name' => fake()->name(),
             'username' => fake()->unique()->userName(),
