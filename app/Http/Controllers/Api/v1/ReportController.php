@@ -201,7 +201,7 @@ class ReportController extends Controller
             $report->status = ReportStatus::IGNORE;
             $report->save();
             return [
-                'status' => 'sussess',
+                'status' => 'success',
                 'message' => 'Từ chối báo cáo thành công!'
             ];
         } else
